@@ -11,7 +11,9 @@
   "dependencies": {
     "@tanstack/react-query": "^4.20.4",
     "@tanstack/react-query-devtools": "^4.20.4",
+    "devtools": "link:@tanstack/react-query/devtools",
     "next": "13.0.2",
+    "notiflix": "^3.2.5",
     "pnpm": "^7.19.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",

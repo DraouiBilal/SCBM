@@ -4,7 +4,7 @@ import { addHistoryValidator, getAllHistoryValidator } from "../validators/histo
 
 const router = Router();
 
-router.get('/:id',getAllHistoryValidator,getAllHistoryController);
+router.get('/',getAllHistoryValidator,getAllHistoryController);
 router.post('/:id',addHistoryValidator,addHistoryController);
 
 export default router;

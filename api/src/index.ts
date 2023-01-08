@@ -1,10 +1,20 @@
 import express from 'express';
-import routers from './routers';
+import { createServer } from 'http';
 import {exec} from 'child_process';
+import cors from 'cors';
+import routers from './routers';
+import { initSocketIO } from './socketio';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const app = express()
+const server = createServer(app);
+const io = initSocketIO(server);
 
 app.use(express.json())
+
+app.use(cors({origin: '*'}))
 
 if(process.env.NODE_ENV === 'development') {
     exec('npx prisma studio')
@@ -28,6 +38,6 @@ try {
     throw new Error('PORT is not a number');
 }
 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
     console.log(`Server is listening on port ${PORT}`)
 })

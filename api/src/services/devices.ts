@@ -19,6 +19,18 @@ export const getDeviceById = async (device:Device) => {
     return devices;
 }
 
+export const getDeviceWithUsers = async (device:Device) => {
+    const devices = await prisma.device.findFirst({
+        where: {
+            id: device.id
+        },
+        include:{
+            users: true
+        }
+    });
+    return devices;
+}
+
 export const createDevice = async (device: Device) => {
     const newDevice = await prisma.device.create({
         data: device

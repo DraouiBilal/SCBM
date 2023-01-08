@@ -7,6 +7,7 @@ export async function findUserById(id: string): Promise<User | null> {
         where: {
             id
         }
+
     });
     return user;
 }

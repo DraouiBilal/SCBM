@@ -6,7 +6,7 @@ import { generateUUID } from '../utils/generateUUID';
 
 export const getAllHistoryController = async (req: Request, res: Response) => {
     let device:Device | null = {
-        id: req.params.id,
+        id: req.user.deviceId,
         name: '',
     }
 
@@ -46,7 +46,6 @@ export const addHistoryController = async (req: Request, res: Response) => {
 
     const {action} = req.body;
     const user = req.user;
-    console.log(user);
     
     let history = {
         id: generateUUID(),

@@ -4,6 +4,10 @@ import { isAuthenticated } from "../middlewares/isAuthenticated";
 import { isDeviceAdmin } from "../middlewares/isDeviceAdmin";
 import validate from "../utils/validate";
 
+export const getUserValidator = [
+    isAuthenticated,
+]
+
 export const createUserValidator = [
     isAuthenticated,
     isDeviceAdmin,
@@ -18,12 +22,10 @@ export const createUserValidator = [
 
 export const updateUserValidator = [
     isAuthenticated,
-    isAccountOwner,
     validate(z.object({
         fullname: z.string().optional(),
         email: z.string().email().optional(),
         phone: z.string().optional(),
-        password: z.string().min(8).max(20).optional(),
-        status: z.string().optional(),
+        password: z.string().min(8).max(20).optional()
     }))
 ]

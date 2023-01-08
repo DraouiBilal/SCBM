@@ -5,7 +5,14 @@ import * as bcrypt from 'bcrypt';
 import { createUser, deleteUser, findUserById, findUserByEmail, updateUser } from '../services/users';
 import { generateUUID } from "../utils/generateUUID";
 
+export const getUserController = async (req: Request, res: Response) => {
+    // await new Promise(resolve => setTimeout(resolve, 1000));
+    res.json({user:req.user});
+}
+
 export const loginUser = async (req: Request, res: Response) => {
+    await new Promise(resolve => setTimeout(resolve, 1000));
+
     const { email, password } = req.body;
 
     const user = await findUserByEmail(email);
@@ -27,7 +34,9 @@ export const loginUser = async (req: Request, res: Response) => {
 export const createUserController = async (req: Request, res: Response) => {
     const { fullname, email, phone, password, status } = req.body;
 
-    const { deviceId } = req.params
+    const { deviceId } = req.user;
+    console.log(deviceId);
+    
 
     const id = generateUUID();
     let user: User | null = null;
@@ -44,10 +53,11 @@ export const createUserController = async (req: Request, res: Response) => {
 }
 
 export const updateUserController = async (req: Request, res: Response) => {
-    const { fullname, email, phone, password, status } = req.body;
+    const { fullname, email, phone, password } = req.body;
 
-    const id = req.params.id;
+    const id = req.user.id;
     let user: User | null = null;
+    let hashedPassword: string = '';
 
     try {
         user = await findUserById(id);
@@ -59,8 +69,9 @@ export const updateUserController = async (req: Request, res: Response) => {
     if (!user)
         return res.status(404).json({ message: 'User not found' });
     try {
-
-        user = await updateUser({ id, fullname, email, phone, password, status, deviceId: user.deviceId });
+        const salt = await bcrypt.genSalt(10);
+        hashedPassword = await bcrypt.hash(password, salt);
+        user = await updateUser({ id, fullname, email, phone, password: hashedPassword, status: user.status, deviceId: user.deviceId });
     } catch (error) {
         console.log(error);
         return res.status(500).json({ message: 'Internal server error' });

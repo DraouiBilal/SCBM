@@ -22,7 +22,7 @@ services:
     image: scbm-api:latest
     container_name: scbm-api
     build:
-      context: /home/drale/Downloads/projects/web/SCBM/api
+      context: ./api
       dockerfile: Dockerfile.dev
     ports:
       - "5000:5000"
@@ -32,14 +32,14 @@ services:
       - PORT=5000
       - NODE_ENV=development
       - VERSION=V1.0.0
-      - JWT_SECRET=fnAK562ffGngrj
+      - JWT_SECRET=XXX
     depends_on:
       scbm-db:
         condition: service_healthy
     volumes:
       - /tmp/SCBM/api/npm-cache:/root/.npm:z
-      - /home/drale/Downloads/projects/web/SCBM/api/src:/usr/src/app/src:z
-      - /home/drale/Downloads/projects/web/SCBM/api/node_modules:/usr/src/app/node_modules:z
+      - ./api/src:/usr/src/app/src:z
+      - ./api/node_modules:/usr/src/app/node_modules:z
 
 volumes:
   db:
