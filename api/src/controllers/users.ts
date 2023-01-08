@@ -6,7 +6,6 @@ import { createUser, deleteUser, findUserById, findUserByEmail, updateUser } fro
 import { generateUUID } from "../utils/generateUUID";
 
 export const getUserController = async (req: Request, res: Response) => {
-    // await new Promise(resolve => setTimeout(resolve, 1000));
     res.json({user:req.user});
 }
 
@@ -44,7 +43,7 @@ export const createUserController = async (req: Request, res: Response) => {
     try {
         const salt = await bcrypt.genSalt(10);
         hashedPassword = await bcrypt.hash(password, salt);
-        user = await createUser({ id, fullname, email, phone, password: hashedPassword, status, deviceId });
+        user = await createUser({ id,image:"", fullname, email, phone, password: hashedPassword, status, deviceId });
     } catch (error) {
         console.log(error);
         return res.status(500).json({ message: 'Internal server error' });
@@ -53,7 +52,8 @@ export const createUserController = async (req: Request, res: Response) => {
 }
 
 export const updateUserController = async (req: Request, res: Response) => {
-    const { fullname, email, phone, password } = req.body;
+
+    const { fullname, email, phone, password, image } = req.body;
 
     const id = req.user.id;
     let user: User | null = null;
@@ -69,9 +69,14 @@ export const updateUserController = async (req: Request, res: Response) => {
     if (!user)
         return res.status(404).json({ message: 'User not found' });
     try {
-        const salt = await bcrypt.genSalt(10);
-        hashedPassword = await bcrypt.hash(password, salt);
-        user = await updateUser({ id, fullname, email, phone, password: hashedPassword, status: user.status, deviceId: user.deviceId });
+        if(password){
+            const salt = await bcrypt.genSalt(10);
+            hashedPassword = await bcrypt.hash(password, salt);
+        }
+        else {
+            hashedPassword = user.password;
+        }
+        user = await updateUser({ id, fullname, email, phone, image: image.length===0 ? user.image : image , password: hashedPassword, status: user.status, deviceId: user.deviceId });
     } catch (error) {
         console.log(error);
         return res.status(500).json({ message: 'Internal server error' });

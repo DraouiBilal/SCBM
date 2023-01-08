@@ -16,6 +16,7 @@ model User {
   phone    String    @unique
   fullname String
   password String
+  image    String?   
   status   Status
   history  History[]
   Device   Device    @relation(fields: [deviceId], references: [id])

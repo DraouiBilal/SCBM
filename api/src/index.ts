@@ -12,7 +12,7 @@ const app = express()
 const server = createServer(app);
 const io = initSocketIO(server);
 
-app.use(express.json())
+app.use(express.json({limit: '3mb'}))
 
 app.use(cors({origin: '*'}))
 
