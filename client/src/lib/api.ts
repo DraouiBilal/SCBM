@@ -1,5 +1,5 @@
-// export const BASE_API_URL = "http://localhost:5000/api/V1.0.0"
-export const BASE_API_URL = "http://10.192.50.28:5000/api/V1.0.0"
+export const BASE_API_URL = "http://localhost:5000/api/V1.0.0"
+// export const BASE_API_URL = "http://10.192.50.28:5000/api/V1.0.0"
 
 const api = async <T>(url: string, method: string, body?: BodyInit):Promise<T> => {    
     const options: RequestInit  & {headers:{authorization:string}}= {

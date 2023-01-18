@@ -31,7 +31,7 @@ export const loginUser = async (req: Request, res: Response) => {
 }
 
 export const createUserController = async (req: Request, res: Response) => {
-    const { fullname, email, phone, password, status } = req.body;
+    const { fullname, email, phone, password, status,image } = req.body;
 
     const { deviceId } = req.user;
     console.log(deviceId);
@@ -43,7 +43,7 @@ export const createUserController = async (req: Request, res: Response) => {
     try {
         const salt = await bcrypt.genSalt(10);
         hashedPassword = await bcrypt.hash(password, salt);
-        user = await createUser({ id,image:"", fullname, email, phone, password: hashedPassword, status, deviceId });
+        user = await createUser({ id, fullname, email, phone, password: hashedPassword, status, deviceId, image, badgeId: generateUUID(), imageEnc:"" });
     } catch (error) {
         console.log(error);
         return res.status(500).json({ message: 'Internal server error' });
@@ -53,7 +53,7 @@ export const createUserController = async (req: Request, res: Response) => {
 
 export const updateUserController = async (req: Request, res: Response) => {
 
-    const { fullname, email, phone, password, image } = req.body;
+    const { fullname, email, phone, password, image, badgeId } = req.body;
 
     const id = req.user.id;
     let user: User | null = null;
@@ -76,7 +76,7 @@ export const updateUserController = async (req: Request, res: Response) => {
         else {
             hashedPassword = user.password;
         }
-        user = await updateUser({ id, fullname, email, phone, image: image.length===0 ? user.image : image , password: hashedPassword, status: user.status, deviceId: user.deviceId });
+        user = await updateUser({ id, fullname, email, phone, image: (!image || image.length===0) ? user.image : image , password: hashedPassword, status: user.status, deviceId: user.deviceId, badgeId, imageEnc:"s" });
     } catch (error) {
         console.log(error);
         return res.status(500).json({ message: 'Internal server error' });

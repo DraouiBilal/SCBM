@@ -7,6 +7,7 @@ const imageToBase64 = async (file: File | null | undefined) => {
             reader.onload = () => {
                 const res: string = reader.result as string;
                 const base64 = `data:image/jpeg;base64,${res.replace("data:", "").replace(/^.+,/, "")}`;
+                console.log(base64);
                 resolve(base64)
             }
         } catch (err) {

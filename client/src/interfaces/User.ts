@@ -5,6 +5,7 @@ export interface User {
     id:string;
     phone:string;
     image: string;
+    badgeId: string;
     status: UserStatus;
 }
 

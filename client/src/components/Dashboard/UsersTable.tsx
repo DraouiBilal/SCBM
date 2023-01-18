@@ -61,7 +61,7 @@ const UsersTable = ({ setLoading }: props) => {
                                     <td className="w-1/3 text-left py-3 px-4">{user.fullname}</td>
                                     <td className="w-1/3 text-left py-3 px-4">{user.email}</td>
                                     <td className="text-left py-3 px-4"><a className="hover:text-blue-500" href="tel:622322662">{user.phone}</a></td>
-                                    <td className="text-left py-3 px-4"><a className="hover:text-blue-500" href="mailto:jonsmith@mail.com">{user.email}</a></td>
+                                    <td className="text-left py-3 px-4"><a className="hover:text-blue-500" href="mailto:jonsmith@mail.com"><img className="h-32 w-32" src={user.image}/></a></td>
                                     <td className="text-left py-3 px-4 flex justify-center">
                                         <a className="hover:text-blue-500">
                                             <span onClick={()=>mutate(user.id)} className="h-8 cursor-pointer w-8 flex justify-center items-center border border-gray-600 rounded-full "><i className="transition-all hover:text-lg text-red-600 hover:text-red-900 fa fa-trash"></i></span>

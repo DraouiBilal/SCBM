@@ -23,7 +23,7 @@ const Template = ({ Component, pageProps }: props) => {
         message: ""
     });
 
-    const { isLoading } = useQuery(["user"], getUser, {
+    const { isLoading,data } = useQuery(["user"], getUser, {
         staleTime: 1000 * 60 * 60 * 24 * 7,
         cacheTime: 1000 * 60 * 60 * 24 * 7,
         onSuccess(data) {
@@ -36,7 +36,9 @@ const Template = ({ Component, pageProps }: props) => {
     });
 
     useEffect(() => {
-
+        console.log("isLoading: ", isLoading);
+        console.log("data: ", data);
+        
         setLoading({
             isLoading,
             message: "Loading ..."

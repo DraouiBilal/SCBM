@@ -1,4 +1,4 @@
-FROM node:18-alpine3.15
+FROM nikolaik/python-nodejs
 
 WORKDIR /usr/src/app
 
@@ -6,11 +6,27 @@ COPY package.json ./
 
 COPY tsconfig.json ./
 
-# RUN npm install
-
 COPY ./ ./
 
-RUN npx prisma generate --schema ./prisma/schema.prisma
+RUN mkdir -p /tmp/SCBM/images
+
+RUN apt-get update && apt-get install -y libgl1 pkg-config libhdf5-dev gcc
+
+RUN pip install --upgrade pip setuptools wheel
+
+# RUN pip3 install tensorflow tensorflow-gpu 
+RUN pip3 install cmake numpy Click Pillow
+# RUN pip3 install cmake numpy Click Pillow absl-py astor gast grpcio  Keras Keras-Applications Keras-Preprocessing Markdown mock numpy opencv-python pbr PyYAML scikit-learn scipy six tensorboard tensorflow-estimator termcolor Werkzeug h5py
+
+RUN cd && git clone https://github.com/davisking/dlib.git
+
+RUN cd && cd dlib && python3 setup.py install
+
+RUN pip install --upgrade pip setuptools
+
+RUN cd && git clone https://github.com/DraouiBilal/face_recognition.git
+
+RUN cd && cd face_recognition && python setup.py install
 
 EXPOSE 5000
 

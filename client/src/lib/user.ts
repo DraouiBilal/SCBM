@@ -10,8 +10,10 @@ export const login = (body: LoginDTO) => {
     return api.post<LoginRes>(`${BASE_USER_API}/login`, body);
 }
 
-export const getUser = () => {
-    return api.get<UserRes>(`${BASE_USER_API}/me`,);
+export const  getUser = () => {
+    const res = api.get<UserRes>(`${BASE_USER_API}/me`);
+    console.log("test");
+    return res;
 }
 
 export const addUser = (body: AddUserDTO) => {

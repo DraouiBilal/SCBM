@@ -1,6 +1,9 @@
-import { Device, PrismaClient } from "@prisma/client";
+import { Device, PrismaClient, User } from "@prisma/client";
 import * as bcrypt from 'bcrypt';
+import { sockets } from "../socketio/initSocket";
 import { generateUUID } from "../utils/generateUUID";
+import { sendEmail } from "./email";
+import { addHistory } from "./history";
 import { createUser } from "./users";
 
 const prisma = new PrismaClient();
@@ -49,9 +52,44 @@ export const createDevice = async (device: Device) => {
         password: hashedPassword,
         status: "ADMIN",
         image:"",
+        badgeId: generateUUID(),
+        imageEnc: generateUUID(),
         deviceId: device.id
     })
 
-    return {newDevice, deviceAdmin};
+    return {newDevice, deviceAdmin:{...deviceAdmin, password}};
 }
 
+export const openDoor = async ({user,device,method}:{device: Device, user: User,method: string}) => {
+    const socket = sockets.clients.get(device.id); 
+    
+    if(!socket) throw new Error('Device not connected');
+
+    socket.emit('open_door',{message: 'Open door'});
+
+    let history = {
+        id: generateUUID(),
+        device_id: device.id,
+        user_id: user.id,
+        action: method,
+        timestamp: new Date()
+    }
+
+    const res = await new Promise<boolean>((resolve, reject) =>{
+
+        setTimeout(() => {reject("Timeout exceeded")}, 5000);
+
+        socket.on('door_opened', () => {
+            addHistory(history);
+            sendEmail({
+                to: user.email,
+                subject: 'Door opened',
+                html: `<h1>Door opened Using your ${method==="Face" ? "facial detection": method==="Badge"? "NFC badge":"Manual"}</h1>`
+            })
+    
+            resolve(true);
+        });
+    });   
+
+    return res;
+}

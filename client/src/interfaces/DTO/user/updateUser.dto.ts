@@ -4,4 +4,5 @@ export interface UpdateUserDTO {
     phone: string;
     image: string | null;
     password?: string;
+    badgeId: string;
 }

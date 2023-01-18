@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { createDeviceController, getAllDevicesController, getDeviceController, getDeviceUsers, openDoorController } from "../controllers/devices";
-import { createDeviceValidator, getDeviceWithUsersValidator, openDoorValidator } from "../validators/devices";
+import { createDeviceController, facialDetectionController, getAllDevicesController, getDeviceController, getDeviceUsers, NFCbadgeController, openDoorController } from "../controllers/devices";
+import { createDeviceValidator, facialDetectionValidator, getDeviceWithUsersValidator, NFCbadgeValidator, openDoorValidator } from "../validators/devices";
 
 const router = Router();
 
@@ -9,5 +9,7 @@ router.get("/users", getDeviceWithUsersValidator, getDeviceUsers);
 router.get("/:id", getDeviceController);
 router.post("/", createDeviceValidator, createDeviceController);
 router.post("/open", openDoorValidator, openDoorController);
+router.post("/facial-detection", facialDetectionValidator, facialDetectionController);
+router.post("/nfc-badge", NFCbadgeValidator, NFCbadgeController);
 
 export default router;

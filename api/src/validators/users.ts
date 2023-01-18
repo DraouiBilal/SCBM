@@ -26,6 +26,7 @@ export const updateUserValidator = [
         email: z.string().email().nullish(),
         phone: z.string().nullish(),
         password: z.string().min(8).max(20).nullish(),
+        badgeId: z.string().nullish(),
         image: z.string().nullish()
     }))
 ]

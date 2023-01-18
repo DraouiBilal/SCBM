@@ -25,7 +25,7 @@ const AccountForm = ({ setLoading }: props) => {
             Notify.success("Account updated successfully");
             passwordRef.current!.value = "";
             confirmPasswordRef.current!.value = "";
-            queryClient.invalidateQueries(["user"]);
+            queryClient.invalidateQueries(["user","device"]);
         },
         onError(error: unknown) {
             console.log(error);
@@ -47,16 +47,18 @@ const AccountForm = ({ setLoading }: props) => {
     const passwordRef = useRef<HTMLInputElement>(null);
     const confirmPasswordRef = useRef<HTMLInputElement>(null);
     const imageRef = useRef<HTMLInputElement>(null);
+    const badgeIdRef = useRef<HTMLInputElement>(null);
 
     const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        if (!fullnameRef.current || !emailRef.current || !phoneRef.current || !passwordRef.current || !confirmPasswordRef.current || !imageRef.current) return;
+        if (!fullnameRef.current || !emailRef.current || !phoneRef.current || !passwordRef.current || !confirmPasswordRef.current || !imageRef.current || !badgeIdRef.current) return;
         const fullname = fullnameRef.current.value;
         const email = emailRef.current.value;
         const phone = phoneRef.current.value;
         const password = passwordRef.current.value;
         const confirmPassword = confirmPasswordRef.current.value;
         const image = imageRef.current.files? imageRef.current.files[0] : null;
+        const badgeId = badgeIdRef.current.value;
         const imageBase64 = await imageToBase64(image);
 
         if (password !== confirmPassword) {
@@ -64,7 +66,7 @@ const AccountForm = ({ setLoading }: props) => {
             return;
         }
 
-        const user: UpdateUserDTO =  password.length===0 ? { fullname, email, phone, image: imageBase64} : { fullname, email, phone, password, image: imageBase64 };
+        const user: UpdateUserDTO =  password.length===0 ? { fullname, email, phone, image: imageBase64,badgeId} : { fullname, email, phone, password, image: imageBase64,badgeId };
         mutate(user);
     }
 
@@ -101,6 +103,10 @@ const AccountForm = ({ setLoading }: props) => {
                     <div className="mt-2">
                         <label className="block text-sm text-gray-600" htmlFor="cus_name">Confirm Password</label>
                         <input ref={confirmPasswordRef} className="w-full px-5 py-1 text-gray-700 bg-gray-200 rounded" type="password" placeholder="Confirm Password" />
+                    </div>
+                    <div className="mt-2">
+                        <label className="block text-sm text-gray-600" htmlFor="cus_name">Badge ID</label>
+                        <input ref={badgeIdRef} defaultValue={user?.badgeId} className="w-full px-5 py-1 text-gray-700 bg-gray-200 rounded" type="text" placeholder="Badge ID" />
                     </div>
                     <div className="mt-2">
                         <label className="block text-sm text-gray-600" htmlFor="cus_name">Image</label>

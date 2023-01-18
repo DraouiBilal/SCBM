@@ -8,7 +8,7 @@ sio = socketio.Client()
 def connect():
     print('connection established')
     sio.emit('initial_connection', {'device': {
-        'id': '19b99dbe-caef-4311-9e4c-cc8d4c06ab56',
+        'id': '4ed3309b-61c2-47d9-a69e-112c4d8164d9',
         'name': 'Raspberry Pi'  
     }})
 

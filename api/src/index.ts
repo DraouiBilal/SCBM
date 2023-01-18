@@ -5,12 +5,19 @@ import cors from 'cors';
 import routers from './routers';
 import { initSocketIO } from './socketio';
 import dotenv from 'dotenv';
+import sendgrid from '@sendgrid/mail'
 
 dotenv.config();
 
 const app = express()
 const server = createServer(app);
 const io = initSocketIO(server);
+
+if(!process.env.SENDGRID_API_KEY) {
+    throw new Error('SENDGRID_API_KEY is not defined')
+}
+
+sendgrid.setApiKey(process.env.SENDGRID_API_KEY)
 
 app.use(express.json({limit: '3mb'}))
 
