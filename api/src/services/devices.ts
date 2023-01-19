@@ -51,9 +51,7 @@ export const createDevice = async (device: Device) => {
         phone: '0xxxxxxxxxx'.replace(/x/g, () => Math.floor(Math.random() * 10).toString()),
         password: hashedPassword,
         status: "ADMIN",
-        image:"",
         badgeId: generateUUID(),
-        imageEnc: generateUUID(),
         deviceId: device.id
     })
 

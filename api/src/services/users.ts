@@ -50,16 +50,3 @@ export const deleteUser = async (user: User) => {
 
     return deletedUser;
 }
-
-export const getUserImages = async (device: Device) => {
-    const images = await prisma.user.findMany({
-        where: {
-            deviceId: device.id
-        },
-        select: {
-            image: true
-        }
-    });
-
-    return images;
-}

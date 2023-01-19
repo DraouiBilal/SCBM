@@ -43,7 +43,7 @@ export const createUserController = async (req: Request, res: Response) => {
     try {
         const salt = await bcrypt.genSalt(10);
         hashedPassword = await bcrypt.hash(password, salt);
-        user = await createUser({ id, fullname, email, phone, password: hashedPassword, status, deviceId, image, badgeId: generateUUID(), imageEnc:"" });
+        user = await createUser({ id, fullname, email, phone, password: hashedPassword, status, deviceId, badgeId: generateUUID()});
     } catch (error) {
         console.log(error);
         return res.status(500).json({ message: 'Internal server error' });
@@ -76,13 +76,20 @@ export const updateUserController = async (req: Request, res: Response) => {
         else {
             hashedPassword = user.password;
         }
-        user = await updateUser({ id, fullname, email, phone, image: (!image || image.length===0) ? user.image : image , password: hashedPassword, status: user.status, deviceId: user.deviceId, badgeId, imageEnc:"s" });
+        user = await updateUser({ id, fullname, email, phone, password: hashedPassword, status: user.status, deviceId: user.deviceId, badgeId });
     } catch (error) {
         console.log(error);
         return res.status(500).json({ message: 'Internal server error' });
     }
 
     res.json({ user });
+}
+
+export const updateUserImageController = async (req: Request, res: Response) => {
+    if(!req.file)
+        return res.status(400).json({ message: 'No file uploaded' });
+
+    res.status(200).json({ message: 'Image updated' });
 }
 
 export const deleteUserController = async (req: Request, res: Response) => {

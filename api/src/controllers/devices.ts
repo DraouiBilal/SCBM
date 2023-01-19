@@ -8,7 +8,7 @@ import { generateUUID } from "../utils/generateUUID";
 import fs from "fs/promises"
 import { runCommand } from "../utils/runCommand";
 import { compareImages, findPhoneInImage, getImageCode, saveImage } from "../services/image";
-import { getUserImages } from "../services/users";
+import { getUserImages } from "../services/image";
 
 export const getAllDevicesController = async (req: Request, res: Response) => {
     try {
@@ -102,21 +102,16 @@ export const facialDetectionController = async (req: Request, res: Response) => 
 
     if (!device) return res.status(404).json({ message: 'Device not found' });
 
-    const { image } = req.body;
-
-    const receivedImagePath = "/tmp/SCBM/images/userImage.jpeg";
-    const savedImagePath = "/tmp/SCBM/images/savedUserImage.jpeg";
+    const receivedImagePath = `/tmp/SCBM/images/${req.user.id}.jpeg}`;
+    const deviceImagesPath = `/tmp/SCBM/images/${req.user.deviceId}`;
     let open = false;
 
     try {
-        const userImagesPromise = getUserImages(device)
-        const savedImagePromise = saveImage(image, receivedImagePath);
-
-        let userImages: { image: string | null }[] = [];
+        let userImages: string[] = [];
         try {
-            const [userImagesTmp, _] = await Promise.all([userImagesPromise, savedImagePromise]);
-            userImages = userImagesTmp;
-
+            userImages = await getUserImages(device)
+            console.log(userImages);
+            
             // const phoneExists = await findPhoneInImage(receivedImagePath);
 
             // if (phoneExists) 
@@ -127,27 +122,22 @@ export const facialDetectionController = async (req: Request, res: Response) => 
         }
 
         for (let i = 0; i < userImages.length; i++) {
-
             const userImage = userImages[i];
-            if (!userImage.image) continue;
-
-            await saveImage(userImage.image, savedImagePath);
-
+            const savedImagePath = `${deviceImagesPath}/${userImage}`;
             open = await compareImages(savedImagePath, receivedImagePath);
+            if(open) break;
+        }
+        if (!open) return res.status(400).json({ message: "Facial detection failed, face not registered maybe?", open });
 
-            if (!open) return res.status(400).json({ message: "Facial detection failed, face not registered maybe?", open });
+        let opened = false;
+        try {
+            opened = await openDoor({ device, user: req.user, method: "Face" });
+        } catch (err) {
+            return res.status(400).json({ message: "Device not connected", open: false });
+        }
+        if (!opened)
+            return res.status(400).json({ message: "Device not connected", open: false });
 
-
-            let opened = false;
-            try {
-                opened = await openDoor({ device, user: req.user, method: "Face" });
-            } catch (err) {
-                return res.status(400).json({ message: "Device not connected", open: false });
-            }
-            if (!opened)
-                return res.status(400).json({ message: "Device not connected", open: false });
-
-        };
     } catch (err: unknown) {
         console.log(err);
     }

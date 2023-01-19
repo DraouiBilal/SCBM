@@ -17,7 +17,6 @@ model User {
   phone    String    @unique
   fullname String
   password String
-  image    String?   
   badgeId  String?   @unique
   status   Status
   history  History[]

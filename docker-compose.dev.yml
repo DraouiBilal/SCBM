@@ -33,6 +33,7 @@ services:
       - NODE_ENV=development
       - VERSION=V1.0.0
       - JWT_SECRET=fnAK562ffGngrj
+      - SENDGRID_API_KEY=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
     depends_on:
       scbm-db:
         condition: service_healthy

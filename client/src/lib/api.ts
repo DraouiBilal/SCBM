@@ -1,10 +1,19 @@
 export const BASE_API_URL = "http://localhost:5000/api/V1.0.0"
 // export const BASE_API_URL = "http://10.192.50.28:5000/api/V1.0.0"
 
-const api = async <T>(url: string, method: string, body?: BodyInit):Promise<T> => {    
+const api = async <T>(url: string, method: string, body?: BodyInit, headers?:HeadersInit ):Promise<T> => {    
+
+    let headersWithAuth = null
+
+    if(headers)
+        headersWithAuth = {
+            ...headers,
+            "authorization": ""
+        }
+
     const options: RequestInit  & {headers:{authorization:string}}= {
         method,
-        headers: {
+        headers: headersWithAuth || {
             "Content-Type": "application/json",
             "authorization": ""
         },
@@ -37,31 +46,31 @@ const api = async <T>(url: string, method: string, body?: BodyInit):Promise<T> =
 }
 
 export default {
-    get: <T>(url: string, body?: any) => {
+    get: <T>(url: string, body?: any, headers?: HeadersInit) => {
         return api<T>(url, "GET", body)
     },
 
-    post: <T>(url: string, body?: any) => {
+    post: <T>(url: string, body?: any, headers?: HeadersInit) => {
         return api<T>(url, "POST", body);
     },
 
-    put: <T>(url: string, body?: any) => {
+    put: <T>(url: string, body?: any, headers?: HeadersInit) => {
         return api<T>(url, "PUT", body);
     },
 
-    delete: <T>(url: string, body?: any) => {
+    delete: <T>(url: string, body?: any, headers?: HeadersInit) => {
         return api<T>(url, "DELETE", body);
     },
 
-    patch: <T>(url: string, body?: any) => {
+    patch: <T>(url: string, body?: any, headers?: HeadersInit) => {
         return api<T>(url, "PATCH", body);
     },
 
-    options: <T>(url: string, body?: any) => {
+    options: <T>(url: string, body?: any, headers?: HeadersInit) => {
         return api<T>(url, "OPTIONS", body);
     },
 
-    head: <T>(url: string, body?: any) => {
+    head: <T>(url: string, body?: any, headers?: HeadersInit) => {
         return api<T>(url, "HEAD", body);
     }
 }

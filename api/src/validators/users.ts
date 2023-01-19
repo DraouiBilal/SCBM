@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { isAuthenticated } from "../middlewares/isAuthenticated";
 import { isDeviceAdmin } from "../middlewares/isDeviceAdmin";
+import { upload } from "../storage";
 import validate from "../utils/validate";
 
 export const getUserValidator = [
@@ -29,4 +30,9 @@ export const updateUserValidator = [
         badgeId: z.string().nullish(),
         image: z.string().nullish()
     }))
+]
+
+export const updateUserImageValidator = [
+    isAuthenticated,
+    upload.single('userPersonalImage')  
 ]

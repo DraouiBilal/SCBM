@@ -1,3 +1,4 @@
+import { Device } from "@prisma/client";
 import fs from "fs/promises";
 import { runCommand } from "../utils/runCommand";
 
@@ -26,4 +27,17 @@ export const findPhoneInImage = async (path:string) => {
     const result = await runCommand(`python3 /usr/src/app/src/utils/findPhone.py ${path}`);
     const open = result.includes("True") ? true : false;
     return open;
+}
+
+export const  getUserImages = async (device:Device) => {
+    const path = `/tmp/SCBM/images/${device.id}`;
+    return new Promise<string[]> (async (resolve, reject) => {
+        try {
+            const files = await fs.readdir(path);
+            resolve(files);
+        } catch (err: unknown) {
+            console.log(err);
+            reject(err);
+        }
+    });
 }

@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { isAuthenticated } from "../middlewares/isAuthenticated";
 import { isDeviceAdmin } from "../middlewares/isDeviceAdmin";
+import { upload } from "../storage";
 import validate from "../utils/validate";
 
 export const getDeviceWithUsersValidator = [
@@ -20,9 +21,7 @@ export const openDoorValidator = [
 
 export const facialDetectionValidator = [
     isAuthenticated,
-    validate(z.object({
-        image: z.string()
-    }))
+    upload.single('userImage')
 ]
 
 export const NFCbadgeValidator = [
