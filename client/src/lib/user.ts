@@ -20,12 +20,12 @@ export const addUser = (body: AddUserDTO) => {
     return api.post<UserRes>(`${BASE_USER_API}/signup`, body);
 }
 
-export const updateUser = (body: UpdateUserDTO,image: File | null | undefined ) => {
-    const p1 =  api.patch<UserRes>(`${BASE_USER_API}/me`, body);
-    const p2 =  api.patch<UserRes>(`${BASE_USER_API}/me/image`, image, {
-        'Content-Type': 'multipart/form-data'
-    });
-    return Promise.all([p1, p2]);
+export const updateUser = (body: UpdateUserDTO ) => {
+    return api.patch<UserRes>(`${BASE_USER_API}/me`, body);
+}
+
+export const updateImage = (body: {image: string}) => {
+    return api.patch<UserRes>(`${BASE_USER_API}/me/image`, body);
 }
 
 export const deleteUser = (id: string) => {

@@ -49,10 +49,10 @@ const Login = ({ setLoading }: props) => {
     }, [isLoading])
 
     const onSubmit = (e: FormEvent) => {
+        e.preventDefault();
         Loading.circle("Logging in...", {
             backgroundColor: "rgba(255,255,255,0.2)",
         });
-        e.preventDefault();
         if (!usernameRef.current || !passwordRef.current) return;
         const email = usernameRef.current.value;
         const password = passwordRef.current.value;

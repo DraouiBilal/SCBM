@@ -5,12 +5,12 @@ import validate from "../utils/validate";
 
 export const getAllHistoryValidator = [
     isAuthenticated,
-    isDeviceAdmin
+    // isDeviceAdmin
 ]
 
 export const addHistoryValidator = [
     isAuthenticated,
-    isDeviceAdmin,
+    // isDeviceAdmin,
     validate(
         z.object({
             action: z.string()

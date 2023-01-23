@@ -1,7 +1,7 @@
 import { Device, PrismaClient, User } from "@prisma/client";
 import * as bcrypt from 'bcrypt';
 import { sockets } from "../socketio/initSocket";
-import { generateUUID } from "../utils/generateUUID";
+import { generateUUID } from "../utils/generators";
 import { sendEmail } from "./email";
 import { addHistory } from "./history";
 import { createUser } from "./users";
@@ -75,14 +75,14 @@ export const openDoor = async ({user,device,method}:{device: Device, user: User,
 
     const res = await new Promise<boolean>((resolve, reject) =>{
 
-        setTimeout(() => {reject("Timeout exceeded")}, 5000);
+        setTimeout(() => {reject("Timeout exceeded")}, 10000);
 
         socket.on('door_opened', () => {
             addHistory(history);
             sendEmail({
                 to: user.email,
                 subject: 'Door opened',
-                html: `<h1>Door opened Using your ${method==="Face" ? "facial detection": method==="Badge"? "NFC badge":"Manual"}</h1>`
+                html: `<h1>Door opened Using the web interface</h1>`
             })
     
             resolve(true);

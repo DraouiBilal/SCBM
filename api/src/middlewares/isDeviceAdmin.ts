@@ -3,7 +3,7 @@ import { NextFunction, Request, Response } from "express";
 import { getDeviceById } from "../services/devices";
 
 export const isDeviceAdmin = async (req: Request, res: Response, next: NextFunction) => {
-    const { id } = req.params;
+    const { id } = req.user.deviceId;
     let device: Device | null = {
         id,
         name: '',
@@ -19,7 +19,8 @@ export const isDeviceAdmin = async (req: Request, res: Response, next: NextFunct
     if (!device)
         return res.status(404).json({ message: 'Device not found' });
 
-    if (device.id !== req.user.deviceId)
+
+    if (req.user.status !== "ADMIN")
         return res.status(401).json({ message: 'Unauthorized' });
 
     next();

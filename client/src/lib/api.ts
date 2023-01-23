@@ -17,9 +17,7 @@ const api = async <T>(url: string, method: string, body?: BodyInit, headers?:Hea
             "Content-Type": "application/json",
             "authorization": ""
         },
-    } 
-    console.log(BASE_API_URL+url);
-    
+    }     
 
     if (body)
         options.body = JSON.stringify(body);
@@ -32,8 +30,10 @@ const api = async <T>(url: string, method: string, body?: BodyInit, headers?:Hea
     
     const res = await fetch(BASE_API_URL+url, options);
 
-    if(!res.ok)
-        throw new Error(res.statusText + " " + res.status);
+    if(!res.ok){
+        const resJson = await res.json();
+        throw new Error(resJson.message);
+    }
 
     let resJson:any
     if(res.headers.get('Content-Type')?.includes('application/json')) 
@@ -47,30 +47,30 @@ const api = async <T>(url: string, method: string, body?: BodyInit, headers?:Hea
 
 export default {
     get: <T>(url: string, body?: any, headers?: HeadersInit) => {
-        return api<T>(url, "GET", body)
+        return api<T>(url, "GET", body, headers)
     },
 
     post: <T>(url: string, body?: any, headers?: HeadersInit) => {
-        return api<T>(url, "POST", body);
+        return api<T>(url, "POST", body, headers);
     },
 
     put: <T>(url: string, body?: any, headers?: HeadersInit) => {
-        return api<T>(url, "PUT", body);
+        return api<T>(url, "PUT", body, headers);
     },
 
     delete: <T>(url: string, body?: any, headers?: HeadersInit) => {
-        return api<T>(url, "DELETE", body);
+        return api<T>(url, "DELETE", body, headers);
     },
 
     patch: <T>(url: string, body?: any, headers?: HeadersInit) => {
-        return api<T>(url, "PATCH", body);
+        return api<T>(url, "PATCH", body, headers);
     },
 
     options: <T>(url: string, body?: any, headers?: HeadersInit) => {
-        return api<T>(url, "OPTIONS", body);
+        return api<T>(url, "OPTIONS", body, headers);
     },
 
     head: <T>(url: string, body?: any, headers?: HeadersInit) => {
-        return api<T>(url, "HEAD", body);
+        return api<T>(url, "HEAD", body, headers);
     }
 }

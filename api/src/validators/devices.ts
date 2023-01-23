@@ -9,6 +9,12 @@ export const getDeviceWithUsersValidator = [
     isDeviceAdmin
 ]
 
+export const getDeviceUsersDataValidator = [
+    isAuthenticated,
+    isDeviceAdmin
+]
+
+
 export const createDeviceValidator = [
     validate(z.object({
         name: z.string()

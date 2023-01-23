@@ -36,9 +36,6 @@ const Template = ({ Component, pageProps }: props) => {
     });
 
     useEffect(() => {
-        console.log("isLoading: ", isLoading);
-        console.log("data: ", data);
-        
         setLoading({
             isLoading,
             message: "Loading ..."

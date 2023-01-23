@@ -34,5 +34,4 @@ export const updateUserValidator = [
 
 export const updateUserImageValidator = [
     isAuthenticated,
-    upload.single('userPersonalImage')  
 ]

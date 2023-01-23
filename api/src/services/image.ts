@@ -12,25 +12,24 @@ export const saveImage = async (base64: string, path: string) => {
 }
 
 export const getImageCode = async (path:string) => {
-    const result = await runCommand(`python3 /usr/src/app/src/utils/getFaceCode.py ${path}`);
-    console.log(result);
+    const result = await runCommand(`python3 ${process.env.BASE_PATH}/src/utils/getFaceCode.py ${path}`);
     return result;
 }
 
 export const compareImages = async (receivedImagePath:string, savedImagePath:string) => {
-    const result = await runCommand(`python3 /usr/src/app/src/utils/faceRecognistion.py ${receivedImagePath} ${savedImagePath}`);
+    const result = await runCommand(`python3 ${process.env.BASE_PATH}/src/utils/faceRecognistion.py ${receivedImagePath} ${savedImagePath}`);
     const open = result.includes("True") ? true : false;
     return open;
 }
 
 export const findPhoneInImage = async (path:string) => {
-    const result = await runCommand(`python3 /usr/src/app/src/utils/findPhone.py ${path}`);
+    const result = await runCommand(`python3 ${process.env.BASE_PATH}/src/utils/findPhone.py ${path}`);
     const open = result.includes("True") ? true : false;
     return open;
 }
 
 export const  getUserImages = async (device:Device) => {
-    const path = `/tmp/SCBM/images/${device.id}`;
+    const path = `${process.env.BASE_PATH}/src/storage/images/${device.id}`;
     return new Promise<string[]> (async (resolve, reject) => {
         try {
             const files = await fs.readdir(path);

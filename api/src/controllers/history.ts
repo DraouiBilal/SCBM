@@ -2,7 +2,7 @@ import { Device } from '@prisma/client';
 import {Request, Response} from 'express';
 import { getDeviceById } from '../services/devices';
 import { addHistory, getAllHistory } from '../services/history';
-import { generateUUID } from '../utils/generateUUID';
+import { generateUUID } from '../utils/generators';
 
 export const getAllHistoryController = async (req: Request, res: Response) => {
     let device:Device | null = {

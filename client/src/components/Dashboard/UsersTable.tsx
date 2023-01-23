@@ -40,7 +40,7 @@ const UsersTable = ({ setLoading }: props) => {
     return (
         <div className="w-full mt-6">
             <p className="text-xl pb-3 flex items-center">
-                <i className="fas fa-list mr-3"></i> Registered Users
+            <svg className="w-6 mr-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M40 48C26.7 48 16 58.7 16 72v48c0 13.3 10.7 24 24 24H88c13.3 0 24-10.7 24-24V72c0-13.3-10.7-24-24-24H40zM192 64c-17.7 0-32 14.3-32 32s14.3 32 32 32H480c17.7 0 32-14.3 32-32s-14.3-32-32-32H192zm0 160c-17.7 0-32 14.3-32 32s14.3 32 32 32H480c17.7 0 32-14.3 32-32s-14.3-32-32-32H192zm0 160c-17.7 0-32 14.3-32 32s14.3 32 32 32H480c17.7 0 32-14.3 32-32s-14.3-32-32-32H192zM16 232v48c0 13.3 10.7 24 24 24H88c13.3 0 24-10.7 24-24V232c0-13.3-10.7-24-24-24H40c-13.3 0-24 10.7-24 24zM40 368c-13.3 0-24 10.7-24 24v48c0 13.3 10.7 24 24 24H88c13.3 0 24-10.7 24-24V392c0-13.3-10.7-24-24-24H40z"/></svg> Registered Users
             </p>
             <div className="bg-white overflow-auto">
                 <table className="min-w-full bg-white">
@@ -49,7 +49,6 @@ const UsersTable = ({ setLoading }: props) => {
                             <th className="w-1/4 text-left py-3 px-4 uppercase font-semibold text-sm">Full Name</th>
                             <th className="w-1/4 text-left py-3 px-4 uppercase font-semibold text-sm">Email</th>
                             <th className="text-left py-3 px-4 uppercase font-semibold text-sm">Phone</th>
-                            <th className="text-left py-3 px-4 uppercase font-semibold text-sm">Image</th>
                             <th className="text-left py-3 px-4 uppercase font-semibold text-sm">Action</th>
                         </tr>
                     </thead>
@@ -61,10 +60,9 @@ const UsersTable = ({ setLoading }: props) => {
                                     <td className="w-1/3 text-left py-3 px-4">{user.fullname}</td>
                                     <td className="w-1/3 text-left py-3 px-4">{user.email}</td>
                                     <td className="text-left py-3 px-4"><a className="hover:text-blue-500" href="tel:622322662">{user.phone}</a></td>
-                                    <td className="text-left py-3 px-4"><a className="hover:text-blue-500" href="mailto:jonsmith@mail.com"><img className="h-32 w-32" src={user.image}/></a></td>
-                                    <td className="text-left py-3 px-4 flex justify-center">
+                                    <td className="text-left py-3 px-4">
                                         <a className="hover:text-blue-500">
-                                            <span onClick={()=>mutate(user.id)} className="h-8 cursor-pointer w-8 flex justify-center items-center border border-gray-600 rounded-full "><i className="transition-all hover:text-lg text-red-600 hover:text-red-900 fa fa-trash"></i></span>
+                                            <span onClick={()=>mutate(user.id)} className="h-8 cursor-pointer w-8 flex justify-center items-center border border-gray-600 rounded-full "><svg className="w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M135.2 17.7C140.6 6.8 151.7 0 163.8 0H284.2c12.1 0 23.2 6.8 28.6 17.7L320 32h96c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 96 0 81.7 0 64S14.3 32 32 32h96l7.2-14.3zM32 128H416V448c0 35.3-28.7 64-64 64H96c-35.3 0-64-28.7-64-64V128zm96 64c-8.8 0-16 7.2-16 16V432c0 8.8 7.2 16 16 16s16-7.2 16-16V208c0-8.8-7.2-16-16-16zm96 0c-8.8 0-16 7.2-16 16V432c0 8.8 7.2 16 16 16s16-7.2 16-16V208c0-8.8-7.2-16-16-16zm96 0c-8.8 0-16 7.2-16 16V432c0 8.8 7.2 16 16 16s16-7.2 16-16V208c0-8.8-7.2-16-16-16z"/></svg></span>
                                         </a>
                                     </td>
                                 </tr>

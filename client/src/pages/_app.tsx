@@ -12,7 +12,6 @@ const MyApp: AppType = ({ Component, pageProps }) => {
   return (
     <QueryClientProvider client={queryClient}>
       <Template Component={Component} pageProps={pageProps}/>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js" integrity="sha256-KzZiKy0DWYsnwMF+X1DvQngQ2/FxF7MF3Ff72XcpuPs=" crossOrigin="anonymous"></script>
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>);
 };

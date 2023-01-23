@@ -3,8 +3,8 @@ import { Notify } from "notiflix";
 import { Dispatch, FormEvent, SetStateAction, useEffect, useRef } from "react";
 import { UpdateUserDTO } from "../../interfaces/DTO/user/updateUser.dto";
 import { UserRes } from "../../interfaces/res/user.res";
-import { updateUser } from "../../lib/user";
-import imageToBase64 from "../../utils/iamgeToBase64";
+import { updateUser, updateImage } from "../../lib/user";
+import imageToBase64 from "../../utils/imageToBase64";
 
 type props = {
     setLoading: Dispatch<SetStateAction<{
@@ -37,9 +37,24 @@ const AccountForm = ({ setLoading }: props) => {
         }
     });
 
+    const { mutate: updatePic, isLoading: updatePicLoading } = useMutation(updateImage, {
+        onSuccess(data) {
+            Notify.success("Image updated successfully");
+            queryClient.invalidateQueries(["user"]);
+        },
+        onError(error: unknown) {
+            console.log(error);
+            if (error instanceof Error){
+                Notify.failure(error.message);
+                return;
+            }
+            Notify.failure("Something went wrong");
+        }
+    })
+
     useEffect(() => {
-        setLoading({ isLoading, message: "Loading ..." });
-    }, [isLoading])
+        setLoading({ isLoading: isLoading || updatePicLoading, message: "Loading ..." });
+    }, [isLoading, updatePicLoading])
 
     const fullnameRef = useRef<HTMLInputElement>(null);
     const emailRef = useRef<HTMLInputElement>(null);
@@ -58,23 +73,28 @@ const AccountForm = ({ setLoading }: props) => {
         const password = passwordRef.current.value;
         const confirmPassword = confirmPasswordRef.current.value;
         const image = imageRef.current.files? imageRef.current.files[0] : null;
-        const badgeId = badgeIdRef.current.value;
-        const imageBase64 = await imageToBase64(image);
+        const badgeId = badgeIdRef.current.value;;
 
         if (password !== confirmPassword) {
             Notify.failure("Passwords do not match");
             return;
         }
 
-        const user: UpdateUserDTO =  password.length===0 ? { fullname, email, phone, image: imageBase64,badgeId} : { fullname, email, phone, password, image: imageBase64,badgeId };
+        
+        const user: UpdateUserDTO =  password.length===0 ? { fullname, email, phone, badgeId} : { fullname, email, phone, password, badgeId };
         mutate(user);
+        if(image){
+            const base64 = await imageToBase64(image);
+            if(!base64) return Notify.failure("Something went wrong");
+            updatePic({image: base64});
+        }
     }
 
     return (
 
         <div className="w-full mt-6 pl-0 lg:pl-2">
             <p className="text-xl pb-3 flex items-center">
-                <i className="fas fa-list mr-3"></i> Update your account
+            <svg className="w-6 mr-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M40 48C26.7 48 16 58.7 16 72v48c0 13.3 10.7 24 24 24H88c13.3 0 24-10.7 24-24V72c0-13.3-10.7-24-24-24H40zM192 64c-17.7 0-32 14.3-32 32s14.3 32 32 32H480c17.7 0 32-14.3 32-32s-14.3-32-32-32H192zm0 160c-17.7 0-32 14.3-32 32s14.3 32 32 32H480c17.7 0 32-14.3 32-32s-14.3-32-32-32H192zm0 160c-17.7 0-32 14.3-32 32s14.3 32 32 32H480c17.7 0 32-14.3 32-32s-14.3-32-32-32H192zM16 232v48c0 13.3 10.7 24 24 24H88c13.3 0 24-10.7 24-24V232c0-13.3-10.7-24-24-24H40c-13.3 0-24 10.7-24 24zM40 368c-13.3 0-24 10.7-24 24v48c0 13.3 10.7 24 24 24H88c13.3 0 24-10.7 24-24V392c0-13.3-10.7-24-24-24H40z"/></svg> Update your account
             </p>
             <div className="leading-loose w-full flex justify-center">
                 <form className="p-10 bg-white rounded shadow-xl" onSubmit={(e) => onSubmit(e)}>

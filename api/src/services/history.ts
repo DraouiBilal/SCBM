@@ -1,4 +1,5 @@
 import { PrismaClient, History, Device } from "@prisma/client";
+import { generateUUID } from "../utils/generators";
 
 const prisma = new PrismaClient();
 
@@ -19,6 +20,9 @@ export const getAllHistory = async (device:Device) => {
 
 
 export const addHistory = async (history:History) => {
+    history.id = generateUUID();
+    history.id = generateUUID();
+    history.id = generateUUID();
     const newHistory = await prisma.history.create({
         data: history
     })

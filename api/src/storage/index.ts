@@ -1,14 +1,13 @@
 import multer from 'multer';
-import path from 'path';
 import fs from 'fs';
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, '/tmp/SCBM/images')
+        cb(null, process.env.BASE_PATH+'/src/storage/images')
     },
     filename: (req, file, cb) => {
-        if(!fs.existsSync('/tmp/SCBM/images/'+req.user.deviceId))
-            fs.mkdirSync('/tmp/SCBM/images/'+req.user.deviceId);
+        if(!fs.existsSync(process.env.BASE_PATH+'/src/storage/images/'+req.user.deviceId))
+            fs.mkdirSync(process.env.BASE_PATH+'/src/storage/images/'+req.user.deviceId);
         if(file.fieldname === "userImage")
             return cb(null, "userImage.jpeg");
 

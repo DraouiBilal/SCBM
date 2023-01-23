@@ -8,15 +8,13 @@ COPY tsconfig.json ./
 
 COPY ./ ./
 
-RUN mkdir -p /tmp/SCBM/images
+RUN mkdir -p /home/drale/Downloads/projects/web/SCBM/api/src/storage/images
 
 RUN apt-get update && apt-get install -y libgl1 pkg-config libhdf5-dev gcc
 
 RUN pip install --upgrade pip setuptools wheel
 
-# RUN pip3 install tensorflow tensorflow-gpu 
-RUN pip3 install cmake numpy Click Pillow
-# RUN pip3 install cmake numpy Click Pillow absl-py astor gast grpcio  Keras Keras-Applications Keras-Preprocessing Markdown mock numpy opencv-python pbr PyYAML scikit-learn scipy six tensorboard tensorflow-estimator termcolor Werkzeug h5py
+RUN pip3 install cmake numpy Click Pillow opencv-python
 
 RUN cd && git clone https://github.com/davisking/dlib.git
 

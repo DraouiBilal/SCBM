@@ -1,8 +1,12 @@
+import { useQueryClient } from "@tanstack/react-query";
 import { type NextPage } from "next";
 import Head from "next/head";
+import Link from "next/link";
 import { Dispatch, SetStateAction, useState } from "react";
 import Form from "../components/Dashboard/Form";
 import UsersTable from "../components/Dashboard/UsersTable";
+import { UserRes } from "../interfaces/res/user.res";
+import { UserStatus } from "../interfaces/User";
 
 type props = {
   setLoading: Dispatch<SetStateAction<{
@@ -18,7 +22,7 @@ export const getStaticProps = () => {
 }
 
 const Home: NextPage = ({ setLoading }: props) => {
-
+  
   return (
     <>
       <Head>

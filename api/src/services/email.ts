@@ -10,9 +10,13 @@ export const sendEmail = async ({html,subject,to}:Email) => {
     sgmail.setApiKey(process.env.SENDGRID_API_KEY as string);
     const msg = {
         to,
-        from: 'bilal.draoui@etu.uae.ac.ma',
+        from: 'darkking.bilal@gmail.com',
         subject,
         html,
     };
-    await sgmail.send(msg);
+    console.log(msg);
+    
+    const res = await sgmail.send(msg);
+    console.log(res);
+    return res
 };

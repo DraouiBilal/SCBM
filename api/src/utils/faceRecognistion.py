@@ -15,11 +15,14 @@ image2 = sys.argv[2]
 
 def recognize(image_path, registered_face_path):
   image = face_recognition.load_image_file(image_path)
+  face_code = face_recognition.face_encodings(image)
+  if len(face_code) == 0:
+    return False
+  face_code = face_code[0]
+
   registered_face = face_recognition.load_image_file(registered_face_path)
-
   registered_face_code = face_recognition.face_encodings(registered_face)[0]
-
-  face_code = face_recognition.face_encodings(image)[0]
+  
   return face_recognition.compare_faces([face_code], registered_face_code)
 
 res = recognize(image1, image2) 
